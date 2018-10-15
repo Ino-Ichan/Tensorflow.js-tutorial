@@ -149,6 +149,10 @@ debug2.innerHTML = "y_plot length : " + y_plot.length + "  x_plot length : " + x
 
 var true_data = c3.generate({
     bindto: "#true_data",
+    size: {
+        height: 500,
+        width: 500
+    },
     data: {
         xs: {
             true_data: "t_data_x"
@@ -199,6 +203,10 @@ x_val_array.forEach((x) => {
 
 var tfjs_fig2 = c3.generate({
     bindto: "#tfjs_fig2",
+    size: {
+        height: 500,
+        width: 500
+    },
     data: {
         xs: {
             true_data: "t_data_x",

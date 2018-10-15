@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+
+        <link rel="stylesheet" href="./style.css">
+
+        <link rel="stylesheet" href="./module/c3.min.css">
+        <script src="./module/d3.min.js" charset="utf-8"></script>
+        <script src="./module/c3.min.js"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.13.0"></script>
+
+    </head>
+    <body>
+        <div id="c3js_practice">
+            <h1>C3.js getting started</h1>
+            <p>*Chart1</p>
+            <div id="chart"></div>
+            <p>*Chart2</p>
+            <div id="chart2"></div>
+
+            <p>*Chart3</p>
+            <button onclick="loading()">LOAD</button>
+            <button onclick="unload()">UNLOAD</button>
+            <button onclick="show_d2()">Show_d2</button>
+            <button onclick="hide_d2()">Hide_d2</button>
+        </div>
+        <hr>
+        <div id="tfjs_sample">
+            <h1>Tensorflow.js sample programs 動作確認</h1>
+            <p id="result"></p>
+        </div>
+        <hr>
+        <div id="tfjs_practice">
+            <h1>Tensorflow.js tutorial<br>
+                y = ax^3 + bx^2 + cx + d
+            </h1>
+            <h2>まずはデータをつくった。</h2>
+            <p>データは<b>「係数　a=-0.8, b=-0.2, c=0.9, d=0.5」</b>にノイズを加えた値。</p>
+            <p id="debug"></p>
+            <p id="debug2"></p>
+            <p id="true_data"></p>
+
+            <h2>a, b, c, d の係数にまずはランダムな値を入れている。</h2>
+            <p id="tfjs_fig2"></p>
+            <p>最初のランダムな係数による予想直線</p>
+            <p id="first_predict_coefficient"></p>
+
+            <h2>Train the Model</h2>
+            <p>モデルトレーニングのために定義するのは3つ</p>
+            <ul>
+                <li>損失関数：与えられた多項式がどれだけデータにフィットしたか。低いほどフィットしてる。</li>
+                <li>最適化アルゴリズム：損失関数の出力をもとに、係数の値を変越していく。損失関数の出力を最小にするのが目標。</li>
+                <li>学習ループ：損失を最小化するために際的アルゴリズムを繰り返す。</li>
+            </ul>
+
+            <p>TutorialではMSE（平均二乗誤差）を損失関数として用いる。</p>
+        </div>
+
+
+
+
+        <script src="./javascript.js" type="text/javascript"></script>
+    </body>
+</html>

@@ -237,3 +237,12 @@ var tfjs_fig2 = c3.generate({
 
 var first_predict_coefficient = document.getElementById('first_predict_coefficient');
 first_predict_coefficient.innerHTML = `<b>y = ${a.get()}x^3 + ${b.get()}x^2 + ${c.get()}x + ${d.get()}</b>`;
+
+//損失関数の定義
+
+function loss(predictions, labels) {
+    //predictions, labelsは配列
+    const meanSquareError = predictions.sub(labels).square().mean();
+    return meanSquareError;
+}
+

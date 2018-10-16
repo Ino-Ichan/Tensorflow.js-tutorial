@@ -1,3 +1,4 @@
+
 // ここからc3jsの練習
 var data1 = ['data1', 30, 200, 100, 400, 150, 250];
 var chart = c3.generate({
@@ -122,14 +123,15 @@ var x_val = tf.range(-1.0, 1.0, 0.01);
 //yの値
 var y_val_with_noise = [];
 
-//yの値 tensor
-var y_val = tf.tensor1d(y_val_with_noise);
-
 x_val_array = tensor1d_to_array(x_val);
 x_val_array.forEach(function(x){
     var noise = tf.randomUniform([1], -0.1, 0.1).asScalar().get();
     y_val_with_noise.push(true_func(x) + noise);
 });
+
+//yの値 tensor
+var y_val = tf.tensor1d(y_val_with_noise);
+
 
 var debug = document.getElementById('debug');
 debug.innerHTML = "y_val : " + y_val_with_noise.length;
@@ -262,25 +264,46 @@ function train (xs, ys, numIterations = 75) {
         //繰り返しの回数だけminimize関数が呼ばれる。Where th magic happens!
         optimizer.minimize(()=>{
             const predsYs = predict(xs);
-            var loss_return = loss(predsYs, ys);
-            loss_val.push(loss_return);
-            return loss_return;
+            return loss(predsYs, ys);
         });
     };
 }
 
+train(x_val, y_val);
+
+var debug3 = document.getElementById('debug3');
+debug3.innerHTML = y_val;
+
 //損失関数の値がどのように変化したかを見る。
 var loss_val = [];
 
-function start_train() {
-    train(x_val, y_val);
-}
+// function start_train() {
+//     console.log('push button');
+//     train(x_val, y_val);
 
-// ここに損失関数の値の結果を出力する文字列を入れていく
-var loss_val_text = "";
+//     // ここに損失関数の値の結果を出力する文字列を入れていく
+//     var loss_val_text = "";
 
-for (var i = 0; i < loss_val.length; i++){
-    loss_val_text += `<li>${i+1}回目：${loss_val[i]}</li>`
-};
+//     for (var i = 0; i < loss_val.length; i++){
+//         loss_val_text += `<li>${i+1}回目：${loss_val[i]}</li>`
+//     };
 
-//結果の出力
+//     //結果の出力
+//     var loss_val_output_html = document.getElementById('loss_val');
+//     loss_val_output_html.innerHTML = "<ul>" + loss_val_text + "</ul>";
+// }
+
+// train(x_val, y_val);
+
+
+
+// // ここに損失関数の値の結果を出力する文字列を入れていく
+// var loss_val_text = "";
+
+// for (var i = 0; i < loss_val.length; i++){
+//     loss_val_text += `<li>${i+1}回目：${loss_val[i]}</li>`
+// };
+
+// //結果の出力
+// var loss_val_output_html = document.getElementById('loss_val');
+// loss_val_output_html.innerHTML = "<ul>" + loss_val_text + "</ul>" + "hoge";

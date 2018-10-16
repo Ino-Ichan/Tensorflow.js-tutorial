@@ -282,7 +282,7 @@ debug3.innerHTML = y_val;
 
 
 function start_train() {
-    console.log('push button');
+    loss_val = [];
     train(x_val, y_val);
 
     // ここに損失関数の値の結果を出力する文字列を入れていく
@@ -294,7 +294,10 @@ function start_train() {
 
     //結果の出力
     var loss_val_output_html = document.getElementById('loss_val');
-    loss_val_output_html.innerHTML = "<ul>" + loss_val_text + "</ul>";
+    loss_val_output_html.innerHTML = "";
+    var li_ul = document.createElement('p');
+    li_ul.innerHTML = "<ul>" + loss_val_text + "</ul>";
+    loss_val_output_html.appendChild(li_ul);
 }
 
 
@@ -308,5 +311,8 @@ for (var i = 0; i < loss_val.length; i++){
 };
 
 //結果の出力
+
 var loss_val_output_html = document.getElementById('loss_val');
-loss_val_output_html.innerHTML = "<ul>" + loss_val_text + "</ul>" + "hoge";
+var li_ul = document.createElement('p');
+li_ul.innerHTML = "<ul>" + loss_val_text + "</ul>";
+loss_val_output_html.appendChild(li_ul);

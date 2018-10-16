@@ -116,11 +116,14 @@ function true_func(x){
     return a * x ** 3 + b * x ** 2 + c * x + d;
 };
 
-// xの値
+// xの値 tensor
 var x_val = tf.range(-1.0, 1.0, 0.01);
 
 //yの値
 var y_val_with_noise = [];
+
+//yの値 tensor
+var y_val = tf.tensor1d(y_val_with_noise);
 
 x_val_array = tensor1d_to_array(x_val);
 x_val_array.forEach(function(x){
@@ -246,3 +249,19 @@ function loss(predictions, labels) {
     return meanSquareError;
 }
 
+function train (xs, ys, numIterations = 75) {
+    const learningRate = 0.5;
+    const optimizer = tf.train.sgd(learningRate);
+
+    for (let iter = 0; iter < numIterations; iter ++ ){
+        //繰り返しの回数だけminimize関数が呼ばれる。Where th magic happens!
+        optimizer.minimize(()=>{
+            const predsYs = predict(xs);
+            return loss(predsYs, ys);
+        });
+    };
+}
+
+function start_train() {
+    train(x_val, y_val);
+}

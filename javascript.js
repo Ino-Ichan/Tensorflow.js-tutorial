@@ -134,7 +134,7 @@ var y_val = tf.tensor1d(y_val_with_noise);
 
 
 var debug = document.getElementById('debug');
-debug.innerHTML = "y_val : " + y_val_with_noise.length;
+debug.innerHTML = "Debug::  " + "y_val : " + y_val_with_noise.length;
 
 // 実験で使う値はできた
 
@@ -150,7 +150,7 @@ y_val_with_noise.forEach((i)=>{
 });
 
 var debug2 = document.getElementById('debug2');
-debug2.innerHTML = "y_plot length : " + y_plot.length + "  x_plot length : " + x_plot.length;
+debug2.innerHTML = "Debug2:: " + "y_plot length : " + y_plot.length + "  x_plot length : " + x_plot.length;
 
 var true_data = c3.generate({
     bindto: "#true_data",
@@ -265,24 +265,30 @@ function train (xs, ys, numIterations = 75) {
         optimizer.minimize(()=>{
             const predsYs = predict(xs);
             var output_loss = loss(predsYs, ys);
-            loss_val.push(output_loss.get());
+            loss_val.push(output_loss.get()); //listに損失関数の値を入れていく
             return output_loss;
         });
     };
 }
 
-var loss_val = [];
-
-train(x_val, y_val);
 
 var debug3 = document.getElementById('debug3');
-debug3.innerHTML = y_val;
+debug3.innerHTML = "Debug3:: " + "y_val : " + y_val;
 
 //損失関数の値がどのように変化したかを見る。
 
+var loss_val = []; //損失関数の値を追加していくためのリスト
+
+// ここに損失関数の値の結果を文字列として入れていく
+var loss_val_text = "";
+
+for (var i = 0; i < loss_val.length; i++){
+    loss_val_text += `<li>${i+1}回目：${loss_val[i]}</li>`
+};
+
 
 function start_train() {
-    loss_val = [];
+
     train(x_val, y_val);
 
     // ここに損失関数の値の結果を出力する文字列を入れていく
@@ -294,25 +300,14 @@ function start_train() {
 
     //結果の出力
     var loss_val_output_html = document.getElementById('loss_val');
-    loss_val_output_html.innerHTML = "";
-    var li_ul = document.createElement('p');
-    li_ul.innerHTML = "<ul>" + loss_val_text + "</ul>";
-    loss_val_output_html.appendChild(li_ul);
+    loss_val_output_html.innerHTML = "<ul>" + loss_val_text + "</ul>";
+
+    //学習開始のボタンを消す
+    document.getElementById('train_button').style.display = "none";
 }
 
+const x_result_plot_tensor = tf.range(1, loss_val.length+1);
+const x_result_plot = tensor1d_to_array(x_result_plot_tensor);
 
 
 
-// ここに損失関数の値の結果を出力する文字列を入れていく
-var loss_val_text = "";
-
-for (var i = 0; i < loss_val.length; i++){
-    loss_val_text += `<li>${i+1}回目：${loss_val[i]}</li>`
-};
-
-//結果の出力
-
-var loss_val_output_html = document.getElementById('loss_val');
-var li_ul = document.createElement('p');
-li_ul.innerHTML = "<ul>" + loss_val_text + "</ul>";
-loss_val_output_html.appendChild(li_ul);

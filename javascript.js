@@ -203,7 +203,9 @@ function predict(x) {
     });
 }
 
-y_first_predict = ["y_predict_1"];
+var y_first_predict = ["y_predict_1"];
+
+// 予想の曲線を表示している
 x_val_array.forEach((x) => {
     return tf.tidy(()=>{
         var x_tf = tf.scalar(x);
@@ -241,12 +243,18 @@ var tfjs_fig2 = c3.generate({
             tick: {
                 fit: false
             }
+        },
+        y: {
+            label: {
+                text: "Y",
+                position: "outer-middle"
+            }
         }
     }
 });
 
 var first_predict_coefficient = document.getElementById('first_predict_coefficient');
-first_predict_coefficient.innerHTML = `<b>y = ${a.get()}x^3 + ${b.get()}x^2 + ${c.get()}x + ${d.get()}</b>`;
+first_predict_coefficient.innerHTML = `<b>y = ${a_result}x<sup>3</sup> + ${b_result}x<sup>2</sup> + ${c_result}x + ${d_result}</b>`;
 
 //損失関数の定義
 
@@ -279,35 +287,135 @@ debug3.innerHTML = "Debug3:: " + "y_val : " + y_val;
 
 var loss_val = []; //損失関数の値を追加していくためのリスト
 
-// ここに損失関数の値の結果を文字列として入れていく
+// ここに損失関数の値の結果を出力する文字列を入れていく
 var loss_val_text = "";
-
-for (var i = 0; i < loss_val.length; i++){
-    loss_val_text += `<li>${i+1}回目：${loss_val[i]}</li>`
-};
 
 
 function start_train() {
 
     train(x_val, y_val);
 
-    // ここに損失関数の値の結果を出力する文字列を入れていく
-    var loss_val_text = "";
 
     for (var i = 0; i < loss_val.length; i++){
         loss_val_text += `<li>${i+1}回目：${loss_val[i]}</li>`
     };
 
     //結果の出力
+    var loss_val_text_html = document.getElementById('loss_val_text_html');
+    loss_val_text_html.innerHTML = "<b>学習回数と損失関数の値</b>";
     var loss_val_output_html = document.getElementById('loss_val');
     loss_val_output_html.innerHTML = "<ul>" + loss_val_text + "</ul>";
 
     //学習開始のボタンを消す
     document.getElementById('train_button').style.display = "none";
+
+    const number_of_x_loss_plot = loss_val.length + 1;
+
+    var x_loss_plot_tensor = tf.range(1.0, number_of_x_loss_plot, 1.0);
+    var x_loss_plot = tensor1d_to_array(x_loss_plot_tensor);
+
+    //損失関数の変化を図示するためにx, yにラベルづけ
+    loss_val.unshift('loss_plot');
+    x_loss_plot.unshift('X');
+
+    var debug4 = document.getElementById("debug4");
+    debug4.innerHTML = "Debug4:: " + `x : ${x_loss_plot}, y : ${loss_val}`;
+
+    //損失関数の値を図示
+
+    var loss_plot_text = document.getElementById("loss_plot_text");
+    loss_plot_text.innerHTML = "<b>損失関数の値の変化</b>";
+
+    var loss_plot = c3.generate({
+        bindto: "#loss_plot",
+        size: {
+            height: 500,
+            width: 650
+        },
+        data: {
+            xs: {
+                loss_plot: "X"
+            },
+            columns: [
+                x_loss_plot,
+                loss_val
+            ]
+        },
+        axis: {
+            x: {
+                label: {
+                    text: "学習回数",
+                    position: "outer-middle"
+                },
+                tick: {
+                    fit: false
+                }
+            },
+            y: {
+                label: {
+                    text: "損失関数の値",
+                    position: "outer-middle"
+                }
+            }
+        }
+    });
+    
+    //フィットさせた結果を図示するために配列を作ってる
+    var y_result_predict = ["y_result_predict"];
+
+    x_val_array.forEach((x) => {
+        return tf.tidy(()=>{
+            var x_tf = tf.scalar(x);
+            y_result_predict.push(predict(x_tf).asScalar().get());
+        });    
+    });
+
+    //結果を図示する
+
+    var fit_function_text = document.getElementById('fit_function_text');
+    fit_function_text.innerHTML = `<b>係数を学習してフィットさせた図</b><br><b>y = ${a.get()}x<sup>3</sup> + ${b.get()}x<sup>2</sup> + ${c.get()}x + ${d.get()}</b>`
+
+    var debug5 = document.getElementById('debug5');
+    debug5.innerHTML = "Debug5::  " + `x_plot : ${x_plot.length}, y_plot : ${y_plot.length}, y_result_pred : ${y_result_predict.length}`;
+    var fit_function = c3.generate({
+        bindto: "#fit_function",
+        size: {
+            height: 500,
+            width: 500
+        },
+        data: {
+            xs: {
+                true_data: "t_data_x",
+                y_result_predict: "t_data_x"
+            },
+            columns: [
+                x_plot,
+                y_plot,
+                y_result_predict
+            ],
+            types: {
+                true_data: "scatter",
+                y_result_predict: "line"
+            }
+        },
+        axis: {
+            x: {
+                label: {
+                    text: "X",
+                    position: "outer-middle"
+                },
+                tick: {
+                    fit: false
+                }
+            },
+            y: {
+                label: {
+                    text: "Y",
+                    position: "outer-middle"
+                }
+            }
+        }
+    });
 }
-
-const x_result_plot_tensor = tf.range(1, loss_val.length+1);
-const x_result_plot = tensor1d_to_array(x_result_plot_tensor);
-
 
 

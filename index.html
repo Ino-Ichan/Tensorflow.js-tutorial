@@ -38,8 +38,8 @@
             </h1>
             <h2>まずはデータをつくった。</h2>
             <p>データは<b>「係数　a=-0.8, b=-0.2, c=0.9, d=0.5」</b>にノイズを加えた値。</p>
-            <p id="debug"></p>
-            <p id="debug2"></p>
+            <p id="debug" class="debug"></p>
+            <p id="debug2" class="debug"></p>
             <p id="true_data"></p>
 
             <h2>a, b, c, d の係数にまずはランダムな値を入れている。</h2>
@@ -72,13 +72,22 @@
             <p>２：loss関数でMSEの値を出している。</p>
             <p>minimizeは損失関数の返り値をうけて、この関数内で使われたVariableを最適化していく。</p>
             
-            <h2>結果を見て見る</h2>
+            <h2>学習を実行して結果を見る</h2>
             <button onclick="start_train()" id="train_button">学習開始</button>
             
-            <p id="debug3"></p>
+            <p id="debug3" class="debug"></p>
 
-            <p><b>学習回数と損失関数の値</b></p>
+            <p id="loss_val_text_html"></p>
             <p id="loss_val"></p>
+
+            <p id="debug4" class="debug"></p>
+
+            <p id="loss_plot_text"></p>
+            <p id="loss_plot"></p>
+
+            <p id="debug5" class="debug"></p>
+            <p id="fit_function_text"></p>
+            <p id="fit_function"></p>
 
             
         </div>

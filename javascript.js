@@ -416,6 +416,15 @@ function start_train() {
             }
         }
     });
+
+    var final_result = document.getElementById('final_result');
+    final_result.innerHTML = `<b>
+        <h2>最終結果</h2>
+        <p>設定した値： a=-0.80, b=-0.20, c=0.90, d=0.50<p>
+        <p>学習した値：a=${round_2(a.get())}, b=${round_2(b.get())}, c=${round_2(c.get())}, d=${round_2(d.get())}</p>
+    </b>`;
 }
 
-
+function round_2 (val){
+    return Math.round(val*100)/100;
+}

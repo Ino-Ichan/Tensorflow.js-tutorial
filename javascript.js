@@ -262,13 +262,25 @@ function train (xs, ys, numIterations = 75) {
         //繰り返しの回数だけminimize関数が呼ばれる。Where th magic happens!
         optimizer.minimize(()=>{
             const predsYs = predict(xs);
-            return loss(predsYs, ys);
+            var loss_return = loss(predsYs, ys);
+            loss_val.push(loss_return);
+            return loss_return;
         });
     };
 }
+
+//損失関数の値がどのように変化したかを見る。
+var loss_val = [];
 
 function start_train() {
     train(x_val, y_val);
 }
 
+// ここに損失関数の値の結果を出力する文字列を入れていく
+var loss_val_text = "";
 
+for (var i = 0; i < loss_val.length; i++){
+    loss_val_text += `<li>${i+1}回目：${loss_val[i]}</li>`
+};
+
+//結果の出力

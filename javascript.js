@@ -264,10 +264,14 @@ function train (xs, ys, numIterations = 75) {
         //繰り返しの回数だけminimize関数が呼ばれる。Where th magic happens!
         optimizer.minimize(()=>{
             const predsYs = predict(xs);
-            return loss(predsYs, ys);
+            var output_loss = loss(predsYs, ys);
+            loss_val.push(output_loss.get());
+            return output_loss;
         });
     };
 }
+
+var loss_val = [];
 
 train(x_val, y_val);
 
@@ -275,35 +279,34 @@ var debug3 = document.getElementById('debug3');
 debug3.innerHTML = y_val;
 
 //損失関数の値がどのように変化したかを見る。
-var loss_val = [];
 
-// function start_train() {
-//     console.log('push button');
-//     train(x_val, y_val);
 
-//     // ここに損失関数の値の結果を出力する文字列を入れていく
-//     var loss_val_text = "";
+function start_train() {
+    console.log('push button');
+    train(x_val, y_val);
 
-//     for (var i = 0; i < loss_val.length; i++){
-//         loss_val_text += `<li>${i+1}回目：${loss_val[i]}</li>`
-//     };
+    // ここに損失関数の値の結果を出力する文字列を入れていく
+    var loss_val_text = "";
 
-//     //結果の出力
-//     var loss_val_output_html = document.getElementById('loss_val');
-//     loss_val_output_html.innerHTML = "<ul>" + loss_val_text + "</ul>";
-// }
+    for (var i = 0; i < loss_val.length; i++){
+        loss_val_text += `<li>${i+1}回目：${loss_val[i]}</li>`
+    };
 
-// train(x_val, y_val);
+    //結果の出力
+    var loss_val_output_html = document.getElementById('loss_val');
+    loss_val_output_html.innerHTML = "<ul>" + loss_val_text + "</ul>";
+}
 
 
 
-// // ここに損失関数の値の結果を出力する文字列を入れていく
-// var loss_val_text = "";
 
-// for (var i = 0; i < loss_val.length; i++){
-//     loss_val_text += `<li>${i+1}回目：${loss_val[i]}</li>`
-// };
+// ここに損失関数の値の結果を出力する文字列を入れていく
+var loss_val_text = "";
 
-// //結果の出力
-// var loss_val_output_html = document.getElementById('loss_val');
-// loss_val_output_html.innerHTML = "<ul>" + loss_val_text + "</ul>" + "hoge";
+for (var i = 0; i < loss_val.length; i++){
+    loss_val_text += `<li>${i+1}回目：${loss_val[i]}</li>`
+};
+
+//結果の出力
+var loss_val_output_html = document.getElementById('loss_val');
+loss_val_output_html.innerHTML = "<ul>" + loss_val_text + "</ul>" + "hoge";

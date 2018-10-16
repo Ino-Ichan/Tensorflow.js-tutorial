@@ -1,3 +1,7 @@
 .debug {
     display: none;
 }
+
+#loss_val {
+    font-size: 5px;
+}

@@ -264,7 +264,7 @@ function loss(predictions, labels) {
     return meanSquareError;
 }
 
-function train (xs, ys, numIterations = 75) {
+function train (xs, ys, numIterations = 100) {
     const learningRate = 0.5;
     const optimizer = tf.train.sgd(learningRate);
 

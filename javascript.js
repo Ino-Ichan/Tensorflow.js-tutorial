@@ -187,6 +187,11 @@ const b = tf.variable(tf.scalar(Math.random()));
 const c = tf.variable(tf.scalar(Math.random()));
 const d = tf.variable(tf.scalar(Math.random()));
 
+var a_result = a.get();
+var b_result = b.get();
+var c_result = c.get();
+var d_result = d.get();
+
 function predict(x) {
     return tf.tidy(()=>{
         return a.mul(x.pow(tf.scalar(3)))
@@ -265,3 +270,5 @@ function train (xs, ys, numIterations = 75) {
 function start_train() {
     train(x_val, y_val);
 }
+
+
